@@ -3,7 +3,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # 預載情感分類模型（這裡先用通用分類器替代，之後可換成 BioBERT）
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+#classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+classifier = pipeline("zero-shot-classification", model="valhalla/distilbart-mnli-12-3")#換小一點的model
 
 # 這些是我們預設的疾病分類（可以自己改）
 disease_labels = [
