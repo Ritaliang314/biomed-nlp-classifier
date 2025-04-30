@@ -23,3 +23,21 @@
 
 ## 專案結構
 
+## ⚠️ 部署說明
+
+由於 Streamlit Cloud 對 Hugging Face 模型存取有限，本專案在嘗試載入 zero-shot 分類模型（如 `facebook/bart-large-mnli` 與 `valhalla/distilbart-mnli-12-3`）時，會發生持續性的 `OSError`。
+
+### 常見問題：
+- 無法匿名下載模型  
+- 模型體積過大導致逾時  
+- Streamlit 雲端容器限制模型存取權限  
+
+因此，目前 **無法提供線上部署版本**。
+
+🛠️ 不過，本專案可透過以下指令於 **本機正常執行**：
+
+```bash
+streamlit run app.py
+```
+
+此部署限制已被紀錄，以展示對環境限制的理解與實務除錯經驗。
