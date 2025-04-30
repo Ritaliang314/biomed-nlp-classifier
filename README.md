@@ -17,7 +17,7 @@
 - Python
 - Hugging Face Transformers（BioBERT）
 - Pandas、Scikit-learn
-- Streamlit（還沒加，之後會補）
+- Streamlit
 
 ---
 
