@@ -1,4 +1,4 @@
-# MEDI-TAG
+# Biomed NLP classifier
 
 這是一個用來自動分類醫療筆記的專案。使用 BioBERT 預訓練模型，輸入一句簡單的症狀描述，就能預測出可能的疾病類別。
 
