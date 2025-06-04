@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from classifier import classify_medical_note
+import streamlit.components.v1 as components
+
 
 st.title("🩺 症狀分類模型：BioBERT for Medical Specialities")
 
@@ -35,3 +37,14 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"讀取或預測發生錯誤：{e}")
+
+
+text = st.text_input("輸入要唸出的文字", "Hello, how can I help you today?")
+
+if st.button("播放語音"):
+    components.html(f"""
+    <script>
+    var msg = new SpeechSynthesisUtterance("{text}");
+    window.speechSynthesis.speak(msg);
+    </script>
+    """, height=0)
