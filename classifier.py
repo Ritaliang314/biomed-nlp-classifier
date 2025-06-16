@@ -4,7 +4,7 @@ os.environ["TRANSFORMERS_NO_TF"] = "1"
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
-model_name="dux-tecblic/symptom-disease-model"
+model_name = "OzzeY72/biobert-medical-specialities"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 model.eval()

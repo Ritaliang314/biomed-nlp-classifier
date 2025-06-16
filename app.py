@@ -4,37 +4,41 @@ from classifier import classify_medical_note
 import streamlit.components.v1 as components
 # 疾病英文→中文名稱對照
 label_translation = {
-    'Psoriasis': '乾癬',
-    'Osteoarthritis': '骨關節炎',
-    'Pneumonia': '肺炎',
-    'Stroke': '中風',
-    'Gastroesophageal reflux disease': '胃食道逆流',
-    'Hypertension': '高血壓',
-    'Asthma': '氣喘',
-    'Migraine': '偏頭痛',
-    'Depression': '憂鬱症',
-    'Coronary artery disease': '冠狀動脈疾病',
-    'Chronic kidney disease': '慢性腎病',
-    'Diabetes': '糖尿病',
-    'Epilepsy': '癲癇',
-    'Tuberculosis': '肺結核',
-    'Irritable bowel syndrome': '腸躁症',
-    'Hypothyroidism': '甲狀腺功能低下',
-    'Anemia': '貧血',
-    'Liver cirrhosis': '肝硬化',
-    'Chronic obstructive pulmonary disease': '慢性阻塞性肺病',
-    'Heart failure': '心臟衰竭',
-    "Parkinson's disease": '帕金森氏症',
-    'Multiple sclerosis': '多發性硬化症'
+    "Allergy and Immunology": "過敏與免疫科",
+    "Anesthesiology": "麻醉科",
+    "Cardiology": "心臟科",
+    "Dermatology": "皮膚科",
+    "Emergency Medicine": "急診醫學科",
+    "Endocrinology": "內分泌科",
+    "Gastroenterology": "胃腸科",
+    "General Practice": "一般醫學",
+    "Geriatrics": "老年醫學",
+    "Hematology": "血液科",
+    "Infectious Disease": "感染科",
+    "Internal Medicine": "內科",
+    "Nephrology": "腎臟科",
+    "Neurology": "神經科",
+    "Obstetrics and Gynecology": "婦產科",
+    "Oncology": "腫瘤科",
+    "Ophthalmology": "眼科",
+    "Orthopedics": "骨科",
+    "Otolaryngology": "耳鼻喉科",
+    "Pediatrics": "小兒科",
+    "Psychiatry": "精神科",
+    "Pulmonology": "胸腔科",
+    "Radiology": "放射科",
+    "Rheumatology": "風濕免疫科",
+    "Surgery": "外科",
+    "Urology": "泌尿科"
 }
 
 def speak_taiwanese(text):
     st.components.v1.html(f"""
-        <button onclick="speak()">🔊 用台語唸出來</button>
+        <button onclick="speak()">🔊 用中文唸出來</button>
         <script>
             function speak() {{
                 var msg = new SpeechSynthesisUtterance("{text}");
-                msg.lang = "nan-tw";  // 使用台語語音（部分瀏覽器可能 fallback）
+                msg.lang = "zh-tw";  // 使用台語語音（部分瀏覽器可能 fallback）
                 window.speechSynthesis.speak(msg);
             }}
         </script>
@@ -53,7 +57,7 @@ if user_input:
     st.write(f"預測分類：{label}（信心度：{confidence}%)")
     zh_label = label_translation.get(label, label)
 
-    st.write(f"預測疾病（中文）：{zh_label}（信心度：{score}%）")
+    st.write(f"建議看診科別（中文）：{zh_label}")
     
     speak_taiwanese(zh_label)
 
