@@ -3,6 +3,17 @@ import pandas as pd
 from classifier import classify_medical_note
 import streamlit.components.v1 as components
 
+def speak_taiwanese(text):
+    st.components.v1.html(f"""
+        <button onclick="speak()">🔊 用台語唸出來</button>
+        <script>
+            function speak() {{
+                var msg = new SpeechSynthesisUtterance("{text}");
+                msg.lang = "nan-tw";  // 使用台語語音（部分瀏覽器可能 fallback）
+                window.speechSynthesis.speak(msg);
+            }}
+        </script>
+    """, height=100)
 
 st.title("🩺 症狀分類模型：BioBERT for Medical Specialities")
 
@@ -14,7 +25,8 @@ user_input = st.text_input("請輸入一段症狀描述：")
 
 if user_input:
     label, confidence = classify_medical_note(user_input)
-    st.success(f"➡ 預測結果：**{label}**（信心指數：{confidence} %）")
+    st.write(f"預測分類：{label}（信心度：{confidence}%)")
+    speak_taiwanese(label)
 
 # 多筆輸入
 st.subheader("📄 批次輸入（CSV）")
@@ -39,12 +51,3 @@ if uploaded_file is not None:
         st.error(f"讀取或預測發生錯誤：{e}")
 
 
-text = st.text_input("輸入要唸出的文字", "Hello, how can I help you today?")
-
-if st.button("播放語音"):
-    components.html(f"""
-    <script>
-    var msg = new SpeechSynthesisUtterance("{text}");
-    window.speechSynthesis.speak(msg);
-    </script>
-    """, height=0)
