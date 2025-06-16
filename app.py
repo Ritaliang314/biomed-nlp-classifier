@@ -2,6 +2,31 @@ import streamlit as st
 import pandas as pd
 from classifier import classify_medical_note
 import streamlit.components.v1 as components
+# 疾病英文→中文名稱對照
+label_translation = {
+    'Psoriasis': '乾癬',
+    'Osteoarthritis': '骨關節炎',
+    'Pneumonia': '肺炎',
+    'Stroke': '中風',
+    'Gastroesophageal reflux disease': '胃食道逆流',
+    'Hypertension': '高血壓',
+    'Asthma': '氣喘',
+    'Migraine': '偏頭痛',
+    'Depression': '憂鬱症',
+    'Coronary artery disease': '冠狀動脈疾病',
+    'Chronic kidney disease': '慢性腎病',
+    'Diabetes': '糖尿病',
+    'Epilepsy': '癲癇',
+    'Tuberculosis': '肺結核',
+    'Irritable bowel syndrome': '腸躁症',
+    'Hypothyroidism': '甲狀腺功能低下',
+    'Anemia': '貧血',
+    'Liver cirrhosis': '肝硬化',
+    'Chronic obstructive pulmonary disease': '慢性阻塞性肺病',
+    'Heart failure': '心臟衰竭',
+    "Parkinson's disease": '帕金森氏症',
+    'Multiple sclerosis': '多發性硬化症'
+}
 
 def speak_taiwanese(text):
     st.components.v1.html(f"""
@@ -26,7 +51,11 @@ user_input = st.text_input("請輸入一段症狀描述：")
 if user_input:
     label, confidence = classify_medical_note(user_input)
     st.write(f"預測分類：{label}（信心度：{confidence}%)")
-    speak_taiwanese(label)
+    zh_label = label_translation.get(label, label)
+
+    st.write(f"預測疾病（中文）：{zh_label}（信心度：{score}%）")
+    
+    speak_taiwanese(zh_label)
 
 # 多筆輸入
 st.subheader("📄 批次輸入（CSV）")
@@ -49,5 +78,8 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"讀取或預測發生錯誤：{e}")
+
+
+
 
 
