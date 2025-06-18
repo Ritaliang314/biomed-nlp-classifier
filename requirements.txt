@@ -2,3 +2,5 @@ python>=3.10
 transformers>=4.36
 streamlit>=1.30
 torch>=2.1
+tai5-uan5_gian5-gi2_kang1-ku7
+htsengine

@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from classifier import classify_medical_note
 import streamlit.components.v1 as components
+from 臺灣言語工具.語音合成.HTS工具.語音合成 import 語音合成
+
 # 疾病英文→中文名稱對照
 label_translation = {
     "Allergy and Immunology": "過敏與免疫科",
@@ -32,6 +34,8 @@ label_translation = {
     "Urology": "泌尿科"
 }
 
+合成器 = 語音合成("models/nan-pau-1.0.htsvoice")
+
 def speak_taiwanese(text):
     st.components.v1.html(f"""
         <button onclick="speak()">🔊 用中文唸出來</button>
@@ -43,7 +47,12 @@ def speak_taiwanese(text):
             }}
         </script>
     """, height=100)
-
+def speak_taiwanese_audio(text, path="output.wav"):
+    合成器.合成(text, path)
+    st.audio(path, format="audio/wav")
+def speak_taiwanese_audio_button(text, label="🔈 播放台語語音", path="output.wav"):
+    if st.button(label):
+        speak_taiwanese_audio(text, path)
 st.title("🩺 症狀分類模型：BioBERT for Medical Specialities")
 
 st.write("你可以輸入單句症狀描述，或上傳包含多筆症狀的 CSV 檔案。")
@@ -58,7 +67,7 @@ if user_input:
     zh_label = label_translation.get(label, label)
 
     st.write(f"建議看診科別（中文）：{zh_label}")
-    
+    speak_taiwanese_audio_button(zh_label)
     speak_taiwanese(zh_label)
 
 # 多筆輸入
