@@ -1,17 +1,34 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, TextGenerationPipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, TextGenerationPipeline
+import torch
+import accelerate
 
-# 載入模型
-model_name = "Bohanlu/Taigi-Llama-2-Translator-7B"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+def get_pipeline(path:str, tokenizer:AutoTokenizer, accelerator:accelerate.Accelerator) -> TextGenerationPipeline:
+    model = AutoModelForCausalLM.from_pretrained(
+        path, torch_dtype=torch.float16, device_map='auto', trust_remote_code=True)
+    
+    terminators = [tokenizer.eos_token_id, tokenizer.pad_token_id]
 
-# 建立翻譯管線
-translator = TextGenerationPipeline(model=model, tokenizer=tokenizer, max_new_tokens=100)
+    pipeline = TextGenerationPipeline(model = model, tokenizer = tokenizer, num_workers=accelerator.state.num_processes*4, pad_token_id=tokenizer.pad_token_id, eos_token_id=terminators)
 
-def chinese_to_tailo(text):
-    result = translator(f"<ch2tl> {text}")
-    return result[0]["generated_text"].replace(f"<ch2tl> {text}", "").strip()
+    return pipeline
 
-# 使用範例
-tailo = chinese_to_tailo("心臟科")
-print("台羅拼音：", tailo)
+model_dir = "Bohanlu/Taigi-Llama-2-Translator-7B" # or "Bohanlu/Taigi-Llama-2-Translator-13B" for the 13B model
+tokenizer = AutoTokenizer.from_pretrained(model_dir, use_fast=False)
+
+accelerator = accelerate.Accelerator()
+pipe = get_pipeline(model_dir, tokenizer, accelerator)
+
+PROMPT_TEMPLATE = "[TRANS]\n{source_sentence}\n[/TRANS]\n[{target_language}]\n"
+
+def translate(source_sentence:str, target_language:str) -> str:
+    prompt = PROMPT_TEMPLATE.format(source_sentence=source_sentence, target_language=target_language)
+    out = pipe(prompt, return_full_text=False, repetition_penalty=1.1, do_sample=False)[0]['generated_text']
+    return out[:out.find("[/")].strip()
+
+source_sentence = "心臟科"
+
+print("To POJ: " + translate(source_sentence, "POJ"))
+# Output: To POJ: Lí kin-á-ji̍t án-chóaⁿ?
+
+
+

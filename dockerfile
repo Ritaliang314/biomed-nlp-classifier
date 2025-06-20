@@ -12,17 +12,19 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # 安裝 Python 套件（包含台語語音工具）
-RUN pip install --upgrade pip
-RUN pip install \
-    streamlit \
-    pandas \
-    transformers \
-    torch \
-    tai5-uan5_gian5-gi2_kang1-ku7 \
-    htsengine
-
+# RUN pip install --upgrade pip
+# RUN pip install \
+#     streamlit \
+#     pandas \
+#     transformers \
+#     torch 
+#     #accelerate
+#     # tai5-uan5_gian5-gi2_kang1-ku7 \
+#     # htsengine
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 # 下載 HTS 台語語音模型（含 .htsvoice）
-RUN python3 -m 臺灣言語工具.語音合成.HTS工具.安裝HTS語音辨識程式
+#RUN python3 -m 臺灣言語工具.語音合成.HTS工具.安裝HTS語音辨識程式
 
 # 建立應用程式工作目錄
 WORKDIR /app
