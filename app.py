@@ -10,7 +10,7 @@ label_translation = {
     "Anesthesiology": "麻醉科",
     "Cardiology": "心臟科",
     "Dermatology": "皮膚科",
-    "Emergency Medicine": "急診醫學科",
+    "Emergency": "急診醫學科",
     "Endocrinology": "內分泌科",
     "Gastroenterology": "胃腸科",
     "General Practice": "一般醫學",
@@ -37,7 +37,10 @@ label_translation = {
     "Rheumatology": "風濕免疫科",
     "Surgery": "外科",
     'Microbiology':'微生物學',
-    "Urology": "泌尿科"
+    "Urology": "泌尿科",
+    'Nursing':'護理部',
+    'Psychology':'身心科',
+    'Pathology':"病理科"
 }
 
 # 中文語音播放（瀏覽器 TTS）
